@@ -24,11 +24,10 @@ def floatToBytes(f):
     bs = struct.pack("f",f)
     return (bs[3],bs[2],bs[1],bs[0])
 
-
 fastf1.plotting.setup_mpl()
 fastf1.Cache.enable_cache('D:/Onedrive/Docs/F1/doc_cache')
 
-year = 2020
+year = 2020 
 # track = ['Australia', 0, [5278, 1750, 3163, 375, 1100, 1880, 3325, 4150, 4420, 4660], ['\nFL', '\nS1', '\nS2', '1', '3', '6', '11', '13', '14', '15']]
 track = ['Belgium', 0, [7004, 2262, 5077, 380, 1100, 2440, 3080, 3280, 3900, 4550, 4940, 6760], ['\nFL', '\nS1', '\nS2', '1', '3', '5', '8', '9', '10', '12', '14', '19']]
 # track = ['Emilia Romagna', 0.044, [4909, 1780, 3390, 920, 1640, 1940, 2565, 3080, 3615, 4370], ['\nFL', '\nS1', '\nS2', 'T3', 'T6', 'T7', 'T9', 'T12', 'T14', 'T17']]
@@ -40,7 +39,9 @@ session = fastf1.get_session(year, gp, sess)
 session.load()
 driver = ['44','16'] #想对比的车手
 myTime = 100.966 #自己的时间，秒
+telemetryFile = "D:\\Documents\Assetto Corsa\\ctelemetry\\player\\Fan_spa__rss_formula_hybrid_2020.tc" #遥测文件位置
 
+#F1字体文件
 tickFont   = FontProperties(fname="D:/OneDrive/Docs/F1/font/Formula1-Regular.ttf", size=18)
 labelFont  = FontProperties(fname="D:/OneDrive/Docs/F1/font/Formula1-Bold.ttf", size=20)
 titleFont  = FontProperties(fname="D:/OneDrive/Docs/F1/font/Formula1-Bold.ttf", size=22)
@@ -49,7 +50,7 @@ legendFont = FontProperties(fname="D:/OneDrive/Docs/F1/font/Formula1-Regular.ttf
 fig, axes = plt.subplots(4, 1, figsize=(10,12), dpi=192, facecolor='w', sharex=True, gridspec_kw={'height_ratios': [1.5, 1, 0.8, 0.2]})
 existTeam = {''}
 
-with open(r"D:\\Documents\Assetto Corsa\\ctelemetry\\player\\Fan_spa__rss_formula_hybrid_2020.tc", mode="rb") as f:
+with open(telemetryFile, mode="rb") as f:
     filesize=len(f.read())
     print(filesize)
 
@@ -97,10 +98,10 @@ for i in range(len(driver)):
 
     car_data = currentLap.get_car_data()
     
-    time0 = car_data['Time']
-    time0 = (time0/np.timedelta64(1, 's')).astype(float)
+    lapTime = car_data['Time']
+    lapTime = (lapTime/np.timedelta64(1, 's')).astype(float)
     time = [0]
-    time.extend(time0)
+    time.extend(lapTime)
     time.append(currentLap.LapTime/np.timedelta64(1, 's'))
     speed = []
     speed.append(car_data['Speed'].iloc[0])
